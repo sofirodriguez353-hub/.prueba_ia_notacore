@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title">Total de aulas</h5>
+                <p class="display-6 mb-0">{{ total_aulas }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title">Profesores</h5>
+                <p class="display-6 mb-0">{{ total_profesores }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title">Estudiantes</h5>
+                <p class="display-6 mb-0">{{ total_estudiantes }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title">Aulas por año</h5>
+                <ul class="list-unstyled mb-0">
+                    {% for item in aulas_por_año %}
+                        <li>{{ item.año_curso }}°: {{ item.total }}</li>
+                    {% empty %}
+                        <li>No hay aulas registradas.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4 g-3">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title">Accesos rápidos</h5>
+                <div class="d-grid gap-2">
+                    <a class="btn btn-outline-primary" href="{% url 'academico:aula_list' %}">Gestionar aulas</a>
+                    <a class="btn btn-outline-secondary" href="{% url 'academico:usuario_list' %}">Gestionar usuarios</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title">Resumen</h5>
+                <p class="mb-0">Panel administrativo de NotaCore listo para gestionar aulas y usuarios.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

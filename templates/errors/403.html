@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-danger">
+            <div class="card-body p-4 text-center">
+                <h2 class="h4 text-danger">Acceso denegado</h2>
+                <p class="mb-3">No tienes permisos para acceder a esta sección.</p>
+                <a class="btn btn-primary" href="{% url 'usuarios:login' %}">Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="h4 mb-3">Crear cuenta</h2>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">{{ form.non_field_errors|join:', ' }}</div>
+                    {% endif %}
+                    <div class="row g-3">
+                        {% for field in form %}
+                            {% if field.name != 'password1' and field.name != 'password2' and field.name != 'clave_administrativa' %}
+                                <div class="col-md-6">
+                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <div class="text-danger small mt-1">{{ field.errors|join:', ' }}</div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="col-md-6">
+                            <label for="id_password1" class="form-label">Contraseña</label>
+                            {{ form.password1 }}
+                            {% if form.password1.errors %}
+                                <div class="text-danger small mt-1">{{ form.password1.errors|join:', ' }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_password2" class="form-label">Confirmar contraseña</label>
+                            {{ form.password2 }}
+                            {% if form.password2.errors %}
+                                <div class="text-danger small mt-1">{{ form.password2.errors|join:', ' }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-12" id="clave-administrativa-wrapper" style="display:none;">
+                            <label for="id_clave_administrativa" class="form-label">Clave administrativa</label>
+                            <input type="password" name="clave_administrativa" id="id_clave_administrativa" class="form-control" value="{{ form.clave_administrativa.value|default:'' }}">
+                            {% if form.clave_administrativa.errors %}
+                                <div class="text-danger small mt-1">{{ form.clave_administrativa.errors|join:', ' }}</div>
+                            {% endif %}
+                            <div class="form-text">Requerida para roles administrador y profesor.</div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Registrarme</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const roleSelect = document.querySelector('select[name="rol"]') || document.getElementById('id_rol') || document.getElementById('rol-select');
+        const claveWrapper = document.getElementById('clave-administrativa-wrapper');
+        const claveInput = document.getElementById('id_clave_administrativa');
+
+        function toggleClave() {
+            const shouldShow = roleSelect && ['ADMIN', 'PROFESOR'].includes(roleSelect.value);
+            if (claveWrapper) {
+                claveWrapper.style.display = shouldShow ? 'block' : 'none';
+            }
+            if (claveInput) {
+                claveInput.required = shouldShow;
+                if (!shouldShow) {
+                    claveInput.value = '';
+                }
+            }
+        }
+
+        if (roleSelect) {
+            roleSelect.addEventListener('change', toggleClave);
+        }
+        toggleClave();
+    });
+</script>
+{% endblock %}
